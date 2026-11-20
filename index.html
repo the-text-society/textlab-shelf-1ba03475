@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ko"><head><base target="_top"><meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>우리의 도서관을 함께 지어요 · 책 들이기</title>
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--ink:#23262b;--sub:#6b7078;--line:#e6e2d9;--acc:#3d6b5a;--acc2:#e9f1ec;--ok:#2f8a57;--okbg:#e7f5ec;--bad:#c2452d;--badbg:#fbeae6;--warn:#a86b00;--warnbg:#fff4dc;--r:14px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR",sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:28px 18px 120px}
+h1{font-size:22px;margin:0 0 4px}.lead{color:var(--sub);margin:0 0 22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+label{display:block;font-weight:600;margin:14px 0 6px}input[type=text],input[type=password],input[type=search],select,textarea{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--acc);outline-offset:-1px;border-color:var(--acc)}
+.btn{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:10px;padding:11px 18px;font:inherit;font-weight:600;cursor:pointer;background:var(--acc);color:#fff}
+.btn:disabled{opacity:.45;cursor:default}.btn.ghost{background:#fff;color:var(--acc);border:1px solid var(--acc)}.btn.sm{padding:6px 11px;font-size:13px}
+.err{color:var(--bad);margin-top:10px;min-height:1.4em}
+.tabs{display:flex;gap:6px;margin:0 0 14px}.tab{flex:1;text-align:center;padding:11px;border-radius:10px;background:#ebe7de;color:var(--sub);font-weight:600;cursor:pointer;border:0;font:inherit}
+.tab.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.who{display:flex;justify-content:space-between;align-items:center;color:var(--sub);font-size:14px;margin-bottom:14px}.who b{color:var(--ink)}
+.drop{border:2px dashed #c9c3b5;border-radius:var(--r);padding:34px 18px;text-align:center;background:#fbfaf7;transition:.15s}
+.drop.over{border-color:var(--acc);background:var(--acc2)}.drop .big{font-size:18px;font-weight:700;margin:6px 0}.drop .row{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.hint{color:var(--sub);font-size:13px}
+.notice{border-radius:10px;padding:10px 14px;margin:12px 0;font-size:14px}.notice.warn{background:var(--warnbg);color:var(--warn)}.notice.ok{background:var(--okbg);color:var(--ok)}.notice.bad{background:var(--badbg);color:var(--bad)}
+.q{margin-top:16px;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:#fff}
+.qi{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;padding:11px 14px;border-top:1px solid var(--line)}.qi:first-child{border-top:0}
+.ic{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:14px;background:#efece5;color:var(--sub)}
+.qi.ok .ic{background:var(--okbg);color:var(--ok)}.qi.fail .ic{background:var(--badbg);color:var(--bad)}.qi.up .ic{background:var(--acc2);color:var(--acc)}
+.nm{font-weight:600;word-break:break-all}.meta{font-size:12.5px;color:var(--sub)}.meta .dup{color:var(--warn)}.meta .e{color:var(--bad)}
+.bar{height:5px;background:#eee;border-radius:3px;margin-top:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--acc);width:0;transition:width .3s}
+.qi.ok .bar i{background:var(--ok)}.qi.fail .bar i{background:var(--bad)}
+.side{display:flex;gap:6px;align-items:center}.x{border:0;background:none;color:var(--sub);cursor:pointer;font-size:18px;padding:2px 6px}
+.memo{grid-column:2/4;display:none}.memo.on{display:block}.memo textarea{min-height:54px;font-size:14px}
+.link{background:none;border:0;color:var(--acc);cursor:pointer;font:inherit;font-size:12.5px;padding:0;text-decoration:underline}
+.foot{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);border-top:1px solid var(--line);backdrop-filter:blur(6px)}
+.foot .in{max-width:860px;margin:0 auto;padding:12px 18px;display:flex;gap:14px;align-items:center}.foot .sum{flex:1;font-size:14px}.foot .sum b{font-size:15px}
+.tot{height:7px;background:#eee;border-radius:4px;overflow:hidden;margin-top:5px}.tot i{display:block;height:100%;background:var(--acc);width:0;transition:width .3s}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.tools input{flex:2;min-width:180px}.tools select{flex:1;min-width:130px}
+.stat{color:var(--sub);font-size:13.5px;margin:0 0 10px}
+.li{display:grid;grid-template-columns:118px 92px 1fr 70px;gap:10px;padding:10px 14px;border-top:1px solid var(--line);font-size:14px;align-items:start}
+.li.h{font-weight:700;color:var(--sub);font-size:12.5px;background:#faf9f6;border-top:0}.li .fn{word-break:break-all}.li .mm{color:var(--sub);font-size:12.5px;margin-top:2px}
+.li .sz{text-align:right;color:var(--sub)}.chip{display:inline-block;font-size:11px;padding:1px 7px;border-radius:9px;background:var(--acc2);color:var(--acc);margin-left:6px;vertical-align:1px}
+.li.new{background:#f3faf5}.more{display:block;width:100%;margin-top:12px}
+.empty{padding:28px;text-align:center;color:var(--sub)}
+@media(max-width:620px){.li{grid-template-columns:1fr auto}.li.h{display:none}.li .w1{grid-column:1/3;font-size:12.5px;color:var(--sub);order:-1}.li .w2{display:none}.foot .in{flex-wrap:wrap}}
+.mission{display:inline-block;font-size:12.5px;font-weight:600;color:var(--acc);background:var(--acc2);padding:3px 10px;border-radius:12px;margin-bottom:8px}.mission b{font-weight:700}
+</style></head><body><div class="wrap">
+<div class="mission">📚 우리의 도서관을 함께 지어요 · 과제 <b>책 들이기</b><span id="tot"></span></div>
+<h1>스캔 PDF 올리기</h1>
+<p class="lead">파쇄·스캔한 책 PDF를 텍소사 드라이브로 보냅니다. 여러분 드라이브 용량은 쓰지 않아요.</p>
+
+<div id="gate" class="card">
+  <label for="nm">이름</label><input id="nm" type="text" placeholder="예: 홍길동" autocomplete="name">
+  <label for="pw">랩 암호</label><input id="pw" type="password" placeholder="랩에서 받은 숫자" inputmode="numeric">
+  <div class="err" id="gerr"></div>
+  <button class="btn" id="go">들어가기</button>
+  <p class="hint" style="margin-top:14px">이름은 '누가 올렸는지'에 그대로 보여요. 다음부터는 이 컴퓨터가 이름을 기억해요.</p>
+</div>
+
+<div id="app" hidden>
+  <div class="who"><span><b id="me"></b> 님으로 올려요</span><button class="link" id="chg">이름 바꾸기</button></div>
+  <div class="tabs"><button class="tab on" data-t="up">올리기</button><button class="tab" data-t="ls">올라간 파일 <span id="cnt"></span></button></div>
+
+  <section id="t-up">
+    <div class="drop" id="drop">
+      <div style="font-size:30px">📚</div>
+      <div class="big">PDF를 여기로 끌어다 놓으세요</div>
+      <div class="hint">여러 개를 한꺼번에, 또는 폴더째 놓아도 돼요 · 개수 제한 없음 · 파일 하나는 10GB까지</div>
+      <div class="row"><button class="btn ghost" id="pickF">파일 고르기</button><button class="btn ghost" id="pickD">폴더 고르기</button></div>
+      <input type="file" id="inF" accept="application/pdf,.pdf" multiple hidden><input type="file" id="inD" webkitdirectory multiple hidden>
+    </div>
+    <div id="notes"></div>
+    <div class="q" id="q" hidden></div>
+    <p class="hint" id="qhint" hidden style="margin-top:10px">✎ 메모: PDF에 이상한 곳이 있으면(잘림·흐림·빠진 쪽) 파일마다 적어 주세요. 이상민 박사님이 보고 고쳐 주세요.</p>
+  </section>
+
+  <section id="t-ls" hidden>
+    <div class="tools"><input type="search" id="qs" placeholder="파일 이름으로 찾기"><select id="qw"><option value="">모든 사람</option></select><button class="btn ghost" id="rf" title="새로 고침">↻ 새로 고침</button></div>
+    <p class="stat" id="stat"></p>
+    <div class="q" id="ls"></div>
+    <button class="btn ghost more" id="more" hidden></button>
+  </section>
+</div>
+</div>
+<div class="foot" id="foot" hidden><div class="in">
+  <div class="sum"><div id="sum"></div><div class="tot"><i id="tot"></i></div></div>
+  <button class="btn" id="startBtn">올리기 시작</button>
+</div></div>
+
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)};
+var API='https://script.google.com/macros/s/AKfycbwhBrqp1u7whgDaFA9CvtuM0AJZY1C9Xc2N7nGRr2ZWUbQ_k3fpedzKrFgLvEabwcseaw/exec';
+var MOCK=/[?&]mock\b/.test(location.search);
+var S={token:sessionStorage.getItem('tl_t')||'',name:localStorage.getItem('tl_n')||'',items:[],running:false,list:[],shown:30,mode:'direct',seq:0,listAt:0};
+function call(fn){var a=[].slice.call(arguments,1);return new Promise(function(res,rej){
+  if(MOCK)return MOCKS[fn].apply(null,a).then(res,rej);
+  fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({fn:fn,args:a}),credentials:'omit',redirect:'follow'})
+  .then(function(r){if(!r.ok)throw new Error('서버 응답 '+r.status);return r.json()})
+  .then(function(o){if(o.ok)return res(o.v);var m=o.e||'알 수 없는 오류';if(/AUTH/.test(m)){logout('다시 들어와 주세요(6시간이 지났어요)');}rej(new Error(m))},function(e){rej(e)});});}
+function fmt(b){if(b==null)return'';if(b<1048576)return Math.max(1,Math.round(b/1024))+'KB';if(b<1073741824)return(b/1048576).toFixed(b<10485760?1:0)+'MB';return(b/1073741824).toFixed(2)+'GB'}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function nn(s){return String(s||'').normalize('NFC').toLowerCase().replace(/\.pdf$/,'').replace(/[\s_\-()（）]+/g,'')}
+
+/* 들어가기 */
+$('nm').value=S.name;
+function enter(){var n=$('nm').value.trim(),p=$('pw').value.trim();
+  if(!n){$('gerr').textContent='이름을 적어 주세요';$('nm').focus();return}
+  if(!p&&!S.token){$('gerr').textContent='랩 암호를 적어 주세요';$('pw').focus();return}
+  if(S.token&&!p){S.name=n;localStorage.setItem('tl_n',n);show();return}
+  $('go').disabled=true;$('gerr').textContent='';
+  call('login',p).then(function(r){$('go').disabled=false;if(!r.ok){$('gerr').textContent=r.locked?'암호가 여러 번 틀려서 잠깐 잠겼어요. 15분 뒤에 다시 해 주세요':'암호가 맞지 않아요';$('pw').select();return}
+    S.token=r.token;sessionStorage.setItem('tl_t',r.token);S.name=n;localStorage.setItem('tl_n',n);show()},function(e){$('go').disabled=false;$('gerr').textContent='연결이 안 돼요: '+e.message})}
+$('go').onclick=enter;['nm','pw'].forEach(function(i){$(i).addEventListener('keydown',function(e){if(e.key==='Enter')enter()})});
+function show(){$('gate').hidden=true;$('app').hidden=false;$('me').textContent=S.name;loadList();render()}
+function logout(msg){S.token='';sessionStorage.removeItem('tl_t');$('app').hidden=true;$('foot').hidden=true;$('gate').hidden=false;$('gerr').textContent=msg||''}
+$('chg').onclick=function(){if(S.running)return alert('올리는 중에는 바꿀 수 없어요');$('app').hidden=true;$('foot').hidden=true;$('gate').hidden=false;$('nm').focus()};
+if(S.token&&S.name)show();
+
+/* 탭 */
+[].forEach.call(document.querySelectorAll('.tab'),function(b){b.onclick=function(){[].forEach.call(document.querySelectorAll('.tab'),function(x){x.classList.toggle('on',x===b)});
+  $('t-up').hidden=b.dataset.t!=='up';$('t-ls').hidden=b.dataset.t!=='ls';if(b.dataset.t==='ls'&&Date.now()-S.listAt>15000)loadList();render()}});
+
+/* 파일 넣기 */
+function add(files){var bad=[],dups=0,already=0;
+  files.forEach(function(f){
+    if(!/\.pdf$/i.test(f.name)){if(!/^\./.test(f.name))bad.push(f.name);return}
+    if(S.items.some(function(it){return it.file.name===f.name&&it.file.size===f.size&&it.st!=='ok'})){already++;return}
+    var dup=S.list.some(function(r){return nn(r.name)===nn(f.name)});if(dup)dups++;
+    S.items.push({id:++S.seq,file:f,st:'wait',pct:0,err:'',memo:'',dup:dup,done:0});});
+  var h='';
+  if(bad.length)h+='<div class="notice warn">PDF가 아니라서 뺐어요 ('+bad.length+'개): '+esc(bad.slice(0,5).join(', '))+(bad.length>5?' …':'')+'</div>';
+  if(dups)h+='<div class="notice warn">이미 올라간 것과 이름이 같은 파일이 '+dups+'개 있어요(⚠ 표시). 고친 판이면 파일 이름 끝에 (수정본)을 붙여서 올려 주세요. 그냥 올려도 돼요.</div>';
+  if(already)h+='<div class="notice warn">목록에 이미 넣은 파일 '+already+'개는 한 번만 넣었어요.</div>';
+  $('notes').innerHTML=h;render()}
+$('pickF').onclick=function(){$('inF').click()};$('pickD').onclick=function(){$('inD').click()};
+$('inF').onchange=function(){add([].slice.call(this.files));this.value=''};$('inD').onchange=function(){add([].slice.call(this.files));this.value=''};
+var dz=$('drop');['dragenter','dragover'].forEach(function(e){dz.addEventListener(e,function(ev){ev.preventDefault();dz.classList.add('over')})});
+['dragleave','drop'].forEach(function(e){dz.addEventListener(e,function(ev){ev.preventDefault();dz.classList.remove('over')})});
+window.addEventListener('dragover',function(e){e.preventDefault()});window.addEventListener('drop',function(e){e.preventDefault()});
+dz.addEventListener('drop',function(ev){var its=ev.dataTransfer.items;
+  if(its&&its.length&&its[0].webkitGetAsEntry){var ents=[].map.call(its,function(i){return i.webkitGetAsEntry()}).filter(Boolean);walk(ents).then(add)}
+  else add([].slice.call(ev.dataTransfer.files))});
+function walk(ents){var out=[];function one(e){return new Promise(function(res){
+  if(e.isFile)e.file(function(f){out.push(f);res()},function(){res()});
+  else if(e.isDirectory){var rd=e.createReader(),all=[];(function next(){rd.readEntries(function(b){if(!b.length)Promise.all(all.map(one)).then(res);else{all=all.concat([].slice.call(b));next()}},function(){res()})})()}
+  else res()})}
+  return Promise.all(ents.map(one)).then(function(){return out})}
+
+/* 올리기 목록 그리기 */
+function render(){var q=$('q'),its=S.items;q.hidden=!its.length;$('qhint').hidden=!its.length;
+  q.innerHTML=its.map(function(it){var ic={wait:'·',up:'↑',ok:'✓',fail:'!'}[it.st];
+    var st={wait:'기다리는 중',up:'올리는 중 '+it.pct+'%',ok:'올라갔어요 · 드라이브에서 확인함',fail:'실패'}[it.st];
+    var side=it.st==='wait'&&!S.running?'<button class="x" title="빼기" data-x="'+it.id+'">×</button>':it.st==='fail'?'<button class="btn sm ghost" data-r="'+it.id+'">다시</button>':'';
+    return '<div class="qi '+it.st+'"><div class="ic">'+ic+'</div><div><div class="nm">'+esc(it.file.name)+'</div>'+
+      '<div class="meta">'+fmt(it.file.size)+' · '+st+(it.err?' <span class="e">— '+esc(it.err)+'</span>':'')+(it.dup&&it.st!=='ok'?' <span class="dup">⚠ 같은 이름이 이미 있어요</span>':'')+
+      (it.st==='wait'||it.st==='fail'?' · <button class="link" data-m="'+it.id+'">'+(it.memo?'✎ 메모 고치기':'✎ 메모')+'</button>':it.memo?' · ✎ 메모 있음':'')+'</div>'+
+      '<div class="bar"><i style="width:'+(it.st==='ok'?100:it.pct)+'%"></i></div></div><div class="side">'+side+'</div>'+
+      '<div class="memo" id="m'+it.id+'"><textarea data-mt="'+it.id+'" placeholder="예: 87~90쪽 오른쪽이 잘렸어요">'+esc(it.memo)+'</textarea></div></div>'}).join('');
+  foot()}
+$('q').addEventListener('click',function(e){var t=e.target,id;
+  if((id=t.getAttribute('data-x'))){S.items=S.items.filter(function(i){return i.id!=id});render()}
+  else if((id=t.getAttribute('data-r'))){var it=byId(id);it.st='wait';it.err='';it.pct=0;run()}
+  else if((id=t.getAttribute('data-m'))){var m=$('m'+id);m.classList.toggle('on');if(m.classList.contains('on'))m.querySelector('textarea').focus()}});
+$('q').addEventListener('input',function(e){var id=e.target.getAttribute('data-mt');if(id)byId(id).memo=e.target.value});
+function byId(id){return S.items.filter(function(i){return i.id==id})[0]}
+
+function foot(){var its=S.items,f=$('foot');if(!its.length||$('app').hidden||($('t-up').hidden&&!S.running)){f.hidden=true;return}f.hidden=false;
+  var n={wait:0,up:0,ok:0,fail:0},tb=0,db=0;its.forEach(function(i){n[i.st]++;tb+=i.file.size;db+=i.st==='ok'?i.file.size:i.done});
+  var pct=tb?Math.round(db/tb*100):0;$('tot').style.width=pct+'%';var b=$('startBtn');
+  if(S.running){var el=(Date.now()-S.t0)/1000,sp=(db-S.b0)/Math.max(el,1),left=sp>0?(tb-db)/sp:0;
+    $('sum').innerHTML='<b>'+its.length+'개 중 '+n.ok+'개 올라감</b>'+(n.fail?' · <span style="color:var(--bad)">실패 '+n.fail+'</span>':'')+' · '+pct+'%'+(el>8&&left?' · 남은 시간 약 '+(left<90?Math.ceil(left)+'초':Math.ceil(left/60)+'분'):'')+' <span class="hint">· 다 끝날 때까지 이 창을 닫지 마세요</span>';
+    b.disabled=true;b.textContent='올리는 중…'}
+  else if(n.ok===its.length){$('sum').innerHTML='<b style="color:var(--ok)">✓ '+its.length+'개 모두 올라갔어요</b> <span class="hint">· '+fmt(tb)+'</span>';b.disabled=false;b.textContent='새로 올리기';b.onclick=clearDone}
+  else if(n.fail&&!n.wait){$('sum').innerHTML='<b style="color:var(--bad)">'+n.fail+'개가 안 올라갔어요</b> · '+n.ok+'개는 올라감';b.disabled=false;b.textContent='실패한 것 다시 올리기';b.onclick=function(){its.forEach(function(i){if(i.st==='fail'){i.st='wait';i.err='';i.pct=0}});run()}}
+  else{$('sum').innerHTML='<b>'+(n.wait+n.fail)+'개 · '+fmt(its.filter(function(i){return i.st!=='ok'}).reduce(function(a,i){return a+i.file.size},0))+'</b> 올릴 준비가 됐어요'+(n.ok?' <span class="hint">('+n.ok+'개는 이미 올라감)</span>':'');b.disabled=false;b.textContent='올리기 시작';b.onclick=run}}
+function clearDone(){S.items=[];$('notes').innerHTML='';render()}
+
+/* 올리기 */
+var CH=8*1024*1024;
+function run(){if(S.running)return;var todo=S.items.filter(function(i){return i.st==='wait'});if(!todo.length)return;
+  S.running=true;S.t0=Date.now();S.b0=S.items.reduce(function(a,i){return a+(i.st==='ok'?i.file.size:0)},0);render();
+  var lanes=[];for(var k=0;k<3;k++)lanes.push(lane());
+  Promise.all(lanes).then(function(){S.running=false;render();loadList();
+    var n=S.items.filter(function(i){return i.st==='fail'}).length;
+    $('notes').innerHTML=n?'<div class="notice bad">'+n+'개가 안 올라갔어요. 아래 [실패한 것 다시 올리기]를 눌러 주세요. 계속 안 되면 파일 이름과 함께 알려 주세요.</div>':'<div class="notice ok">✓ 모두 올라갔고, 드라이브에 들어간 크기까지 확인했어요. [올라간 파일] 탭에서 볼 수 있어요.</div>'})}
+function lane(){var it=S.items.filter(function(i){return i.st==='wait'})[0];if(!it)return Promise.resolve();it.st='up';it.pct=0;it.done=0;render();
+  return upOne(it).then(function(r){return call('finish',S.token,S.name,r.id,it.memo,it.file.size)}).then(function(){it.st='ok';it.pct=100;it.done=it.file.size;render()},
+    function(e){it.st='fail';it.err=friendly(e);render()}).then(lane)}
+function friendly(e){var m=e&&e.message||String(e);if(/Failed to fetch|NetworkError|network/i.test(m))return'인터넷이 끊겼어요';return m.replace(/^Error:\s*/,'')}
+function upOne(it){var f=it.file,url;
+  return retry(function(){return call('start',S.token,S.name,f.name,f.size,location.origin)}).then(function(s){url=s.url;it.url=url;return chunk(0)});
+  function chunk(off){var end=Math.min(off+CH,f.size),blob=f.slice(off,end);
+    return retry(function(){return sendChunk(url,blob,off,f.size,it)},function(){return call('status',S.token,url,f.size).then(function(r){if(r.done)throw{done:r.file};off=r.next;blob=f.slice(off,Math.min(off+CH,f.size))})})
+      .then(function(r){if(r.done)return r.file;it.done=r.next;it.pct=Math.floor(r.next/f.size*100);render();return chunk(r.next)},function(e){if(e&&e.done)return e.done;throw e})}}
+function retry(fn,resync){var n=0;return (function go(){return fn().catch(function(e){if(++n>=4||/AUTH|PDF만|크기가|만료/.test(e.message||''))throw e;
+  return new Promise(function(r){setTimeout(r,1500*n)}).then(function(){return resync?resync():null}).then(go)})})()}
+function sendChunk(url,blob,off,total,it){var range='bytes '+off+'-'+(off+blob.size-1)+'/'+total;
+  if(S.mode==='direct')return xhr(url,blob,range,off,total,it).catch(function(e){if(e&&e.cors){S.mode='relay';return relay(url,blob,off,total)}throw e});
+  return relay(url,blob,off,total)}
+function xhr(url,blob,range,off,total,it){return new Promise(function(res,rej){var x=new XMLHttpRequest();x.open('PUT',url);x.setRequestHeader('Content-Range',range);
+  x.upload.onprogress=function(e){it.done=off+e.loaded;it.pct=Math.floor((off+e.loaded)/total*100);throttle()};
+  x.onload=function(){if(x.status===308){var rg=x.getResponseHeader('Range');res({done:false,next:rg?Number(rg.split('-')[1])+1:off+blob.size})}
+    else if(x.status===200||x.status===201){try{res({done:true,file:JSON.parse(x.responseText)})}catch(e){rej(new Error('응답을 못 읽었어요'))}}
+    else if(x.status===0)rej({cors:true,message:'cors'});else rej(new Error('드라이브 응답 '+x.status))};
+  x.onerror=function(){rej(off===0&&!S.directOk?{cors:true,message:'cors'}:new Error('Failed to fetch'))};x.send(blob)}).then(function(r){S.directOk=true;return r})}
+function relay(url,blob,off,total){return new Promise(function(res,rej){var fr=new FileReader();fr.onload=function(){res(fr.result.split(',')[1])};fr.onerror=function(){rej(new Error('파일을 못 읽었어요'))};fr.readAsDataURL(blob)})
+  .then(function(b64){return call('relay',S.token,url,b64,off,total)})}
+var tt=0;function throttle(){if(tt)return;tt=setTimeout(function(){tt=0;render()},400)}
+window.addEventListener('beforeunload',function(e){if(S.running){e.preventDefault();e.returnValue=''}});
+
+/* 올라간 파일 */
+function loadList(){S.listAt=Date.now();$('stat').textContent='불러오는 중…';call('list',S.token).then(function(l){S.list=l;S.items.forEach(function(it){if(it.st!=='ok')it.dup=l.some(function(r){return nn(r.name)===nn(it.file.name)})});
+  var who={};l.forEach(function(r){who[r.who]=(who[r.who]||0)+1});var sel=$('qw'),cur=sel.value;
+  sel.innerHTML='<option value="">모든 사람 ('+l.length+')</option>'+Object.keys(who).sort().map(function(w){return'<option value="'+esc(w)+'">'+esc(w||'(이름 없음)')+' ('+who[w]+')</option>'}).join('');sel.value=cur;
+  $('cnt').textContent='('+l.length+')';$('tot').textContent=' · 지금까지 '+l.length+'권';drawList();render()},function(e){$('stat').textContent='목록을 못 불러왔어요: '+e.message})}
+function drawList(){var qs=nn($('qs').value),qw=$('qw').value,today=new Date(Date.now()+9*3600e3).toISOString().slice(0,10);
+  var l=S.list.filter(function(r){return(!qw||r.who===qw)&&(!qs||nn(r.name).indexOf(qs)>=0)});
+  var people={};S.list.forEach(function(r){people[r.who]=1});
+  $('stat').textContent=(qs||qw?'찾은 것 '+l.length+'개 · ':'')+'모두 '+S.list.length+'개 · '+Object.keys(people).length+'명이 올렸어요 · 오늘 올린 것은 연한 초록';
+  var v=l.slice(0,S.shown);
+  $('ls').innerHTML=l.length?'<div class="li h"><div>언제</div><div>누가</div><div>파일</div><div style="text-align:right">크기</div></div>'+v.map(function(r){
+    return'<div class="li'+(String(r.when).slice(0,10)===today?' new':'')+'"><div class="w1">'+esc(r.when)+'</div><div class="w2">'+esc(r.who)+'</div><div><div class="fn">'+esc(r.name)+(r.via==='페이지'?'':'')+'</div>'+
+    '<div class="mm">'+(window.innerWidth<=620?esc(r.who)+(r.memo?' · ':''):'')+(r.memo?'✎ '+esc(r.memo):'')+'</div></div><div class="sz">'+(r.mb?fmt(r.mb*1048576):'')+'</div></div>'}).join(''):'<div class="empty">'+(qs||qw?'찾는 파일이 없어요':'아직 올라간 파일이 없어요')+'</div>';
+  var rest=l.length-v.length;$('more').hidden=rest<=0;$('more').textContent='더보기 ('+rest+'개 더 있어요)'}
+$('rf').onclick=loadList;$('more').onclick=function(){S.shown+=30;drawList()};$('qs').oninput=function(){S.shown=30;drawList()};$('qw').onchange=function(){S.shown=30;drawList()};
+
+/* 미리보기용(구글 밖에서 열었을 때만) */
+var MOCKS={login:function(p){return delay({ok:p==='0000',token:'t'})},
+  list:function(){var a=[],w=['평시','이상민','홍길동','김연구'];for(var i=0;i<74;i++)a.push({when:'2026-11-'+(20-Math.floor(i/9))+' '+(10+i%9)+':'+(10+i%40),who:w[i%4],name:['근세 전기 에도 출판문화사','금곡치 중국사상논집(상)','대청제국과 중화의 혼미','독서와 독자','주자어류 권'+i][i%5]+'_일문.pdf',memo:i%7===0?'87~90쪽 오른쪽이 잘렸어요':'',mb:20+i*3.7,via:'설문'});return delay(a)},
+  start:function(){return delay({url:'mock'})},status:function(){return delay({done:false,next:0})},
+  finish:function(){return delay({ok:true})}};
+function delay(v){return new Promise(function(r){setTimeout(function(){r(v)},250)})}
+if(MOCK){var oldX=xhr;xhr=function(url,blob,range,off,total,it){return new Promise(function(res,rej){var p=0;var iv=setInterval(function(){p+=blob.size/6;it.done=off+Math.min(p,blob.size);it.pct=Math.floor(it.done/total*100);throttle();
+  if(p>=blob.size){clearInterval(iv);if(/실패/.test(it.file.name)&&!it.tried){it.tried=1;rej(new Error('Failed to fetch'))}else res(off+blob.size>=total?{done:true,file:{id:'x'}}:{done:false,next:off+blob.size})}},120)})}}
+})();
+</script></body></html>
