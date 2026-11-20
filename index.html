@@ -5,7 +5,12 @@
 <title>우리의 도서관을 함께 지어요 · 책 들이기</title>
 <style>
 :root{--bg:#f6f4ef;--card:#fff;--ink:#23262b;--sub:#6b7078;--line:#e6e2d9;--acc:#3d6b5a;--acc2:#e9f1ec;--ok:#2f8a57;--okbg:#e7f5ec;--bad:#c2452d;--badbg:#fbeae6;--warn:#a86b00;--warnbg:#fff4dc;--r:14px}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR",sans-serif}
+*{box-sizing:border-box}
+.dm{position:fixed;inset:0;background:rgba(35,38,43,.45);display:grid;place-items:center;z-index:50;padding:18px}.dm[hidden]{display:none}
+.dbox{background:#fff;border-radius:18px;max-width:420px;width:100%;padding:28px 24px 20px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.dic{width:56px;height:56px;border-radius:50%;margin:0 auto 12px;display:grid;place-items:center;font-size:28px;background:var(--okbg);color:var(--ok)}.dic.bad{background:var(--badbg);color:var(--bad)}
+.dbox h3{margin:0 0 6px;font-size:19px}.dbox p{margin:0 0 18px;color:var(--sub)}.dbt{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.dbt button{border:0;border-radius:10px;padding:11px 20px;font:inherit;font-weight:600;cursor:pointer;background:var(--acc);color:#fff}.dbt button.sub{background:#efece5;color:var(--ink)}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR",sans-serif}
 .wrap{max-width:860px;margin:0 auto;padding:28px 18px 120px}
 h1{font-size:22px;margin:0 0 4px}.lead{color:var(--sub);margin:0 0 22px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
@@ -81,6 +86,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--acc);outline-off
   </section>
 </div>
 </div>
+<div class="dm" id="dm" hidden><div class="dbox" role="dialog" aria-modal="true"><div class="dic" id="dic">✓</div><h3 id="dt"></h3><p id="dd"></p><div class="dbt" id="dbt"></div></div></div>
 <div class="foot" id="foot" hidden><div class="in">
   <div class="sum"><div id="sum"></div><div class="tot"><i id="tot"></i></div></div>
   <button class="btn" id="startBtn">올리기 시작</button>
@@ -182,7 +188,17 @@ function run(){if(S.running)return;var todo=S.items.filter(function(i){return i.
   var lanes=[];for(var k=0;k<3;k++)lanes.push(lane());
   Promise.all(lanes).then(function(){S.running=false;render();loadList();
     var n=S.items.filter(function(i){return i.st==='fail'}).length;
-    $('notes').innerHTML=n?'<div class="notice bad">'+n+'개가 안 올라갔어요. 아래 [실패한 것 다시 올리기]를 눌러 주세요. 계속 안 되면 파일 이름과 함께 알려 주세요.</div>':'<div class="notice ok">✓ 모두 올라갔고, 드라이브에 들어간 크기까지 확인했어요. [올라간 파일] 탭에서 볼 수 있어요.</div>'})}
+    $('notes').innerHTML='';doneBox(n)})}
+function doneBox(n){var its=S.items,ok=its.filter(function(i){return i.st==='ok'}),sz=ok.reduce(function(a,i){return a+i.file.size},0),ic=$('dic'),bt=$('dbt');
+  if(!n){ic.className='dic';ic.textContent='✓';$('dt').textContent=ok.length+'권 모두 올라갔어요';$('dd').textContent=fmt(sz)+' · 드라이브에 들어간 크기까지 확인했어요. 확인을 누르면 목록이 비워지고 바로 새로 올릴 수 있어요.';
+    bt.innerHTML='<button class="sub" id="dl">올라간 파일 보기</button><button id="dk">확인</button>';
+    $('dk').onclick=function(){$('dm').hidden=true;clearDone()};$('dl').onclick=function(){$('dm').hidden=true;clearDone();document.querySelector('[data-t="ls"]').click()}}
+  else{ic.className='dic bad';ic.textContent='!';$('dt').textContent=its.length+'권 중 '+n+'권이 안 올라갔어요';$('dd').textContent=ok.length+'권은 잘 올라갔어요. 확인을 누르면 올라간 것은 치우고, 안 올라간 것만 남겨 둘게요.';
+    bt.innerHTML='<button class="sub" id="dk">확인</button><button id="dr">안 올라간 것 다시 올리기</button>';
+    $('dk').onclick=function(){$('dm').hidden=true;S.items=its.filter(function(i){return i.st!=='ok'});render()};
+    $('dr').onclick=function(){$('dm').hidden=true;S.items=its.filter(function(i){return i.st!=='ok'});S.items.forEach(function(i){i.st='wait';i.err='';i.pct=0});run()}}
+  $('dm').hidden=false;setTimeout(function(){var k=$('dk');if(k)k.focus()},50)}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('dm').hidden)$('dk').click()});
 function lane(){var it=S.items.filter(function(i){return i.st==='wait'})[0];if(!it)return Promise.resolve();it.st='up';it.pct=0;it.done=0;render();
   return upOne(it).then(function(r){return call('finish',S.token,S.name,r.id,it.memo,it.file.size)}).then(function(){it.st='ok';it.pct=100;it.done=it.file.size;render()},
     function(e){it.st='fail';it.err=friendly(e);render()}).then(lane)}
